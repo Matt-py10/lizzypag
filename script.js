@@ -18,13 +18,28 @@ const phrases = [
   "chao, espero que te haya gustado, si no te gustó, pues no importa, te lo hice con cariño",
 ];
 
+
 let index = 0;
+let finished = false;
 
 function showNextPhrase() {
+  if (finished) return; // Evita clics extra
+
   const phraseDiv = document.getElementById('phraseDisplay');
   phraseDiv.innerText = phrases[index];
-  phraseDiv.style.animation = 'none'; // Reiniciar animación
-  void phraseDiv.offsetWidth;         // Trigger reflow
+  phraseDiv.style.animation = 'none';
+  void phraseDiv.offsetWidth;
   phraseDiv.style.animation = 'fadeIn 0.6s ease';
-  index = (index + 1) % phrases.length;
+
+  index++;
+
+  if (index === phrases.length) {
+    finished = true;
+
+    // Espera 3 segundos para cerrar/redirigir
+    setTimeout(() => {
+      window.close(); // Solo funciona si fue abierta por script
+      window.location.href = "about:blank"; // Plan B
+    }, 3000);
+  }
 }
